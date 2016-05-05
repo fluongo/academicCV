@@ -1,0 +1,400 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%% Simple LaTeX CV Template %%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%% Document Setup %%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Don't like 10pt? Try 11pt or 12pt
+\documentclass[10pt]{article}
+
+% The automated optical recognition software used to digitize resume
+% information works best with fonts that do not have serifs. This
+% command uses a sans serif font throughout. Uncomment both lines (or at
+% least the second) to restore a Roman font (i.e., a font with serifs).
+%\usepackage{times}
+%\renewcommand{\familydefault}{\sfdefault}
+
+% This is a helpful package that puts math inside length specifications
+\usepackage{calc}
+\usepackage{comment}
+
+% Simpler bibsection for CV sections
+% (thanks to natbib for inspiration)
+\makeatletter
+\newlength{\bibhang}
+\setlength{\bibhang}{1em} %1em}
+\newlength{\bibsep}
+ {\@listi \global\bibsep\itemsep \global\advance\bibsep by\parsep}
+\newenvironment{bibsection}%
+        {\begin{enumerate}{}{%
+%        {\begin{list}{}{%
+       \setlength{\leftmargin}{\bibhang}%
+       \setlength{\itemindent}{-\leftmargin}%
+       \setlength{\itemsep}{\bibsep}%
+       \setlength{\parsep}{\z@}%
+        \setlength{\partopsep}{0pt}%
+        \setlength{\topsep}{0pt}}}
+        {\end{enumerate}\vspace{-.6\baselineskip}}
+%        {\end{list}\vspace{-.6\baselineskip}}
+\makeatother
+
+% Layout: Puts the section titles on left side of page
+\reversemarginpar
+
+%
+%         PAPER SIZE, PAGE NUMBER, AND DOCUMENT LAYOUT NOTES:
+%
+% The next \usepackage line changes the layout for CV style section
+% headings as marginal notes. It also sets up the paper size as either
+% letter or A4. By default, letter was used. If A4 paper is desired,
+% comment out the letterpaper lines and uncomment the a4paper lines.
+%
+% As you can see, the margin widths and section title widths can be
+% easily adjusted.
+%
+% ALSO: Notice that the includefoot option can be commented OUT in order
+% to put the PAGE NUMBER *IN* the bottom margin. This will make the
+% effective text area larger.
+%
+% IF YOU WISH TO REMOVE THE ``of LASTPAGE'' next to each page number,
+% see the note about the +LP and -LP lines below. Comment out the +LP
+% and uncomment the -LP.
+%
+% IF YOU WISH TO REMOVE PAGE NUMBERS, be sure that the includefoot line
+% is uncommented and ALSO uncomment the \pagestyle{empty} a few lines
+% below.
+%
+
+%% Use these lines for letter-sized paper
+\usepackage[paper=letterpaper,
+            %includefoot, % Uncomment to put page number above margin
+            marginparwidth=1.2in,     % Length of section titles
+            marginparsep=.05in,       % Space between titles and text
+            margin=1in,               % 1 inch margins
+            includemp]{geometry}
+
+%% Use these lines for A4-sized paper
+%\usepackage[paper=a4paper,
+%            %includefoot, % Uncomment to put page number above margin
+%            marginparwidth=30.5mm,    % Length of section titles
+%            marginparsep=1.5mm,       % Space between titles and text
+%            margin=25mm,              % 25mm margins
+%            includemp]{geometry}
+
+%% More layout: Get rid of indenting throughout entire document
+\setlength{\parindent}{0in}
+
+\usepackage[shortlabels]{enumitem}
+
+%% Reference the last page in the page number
+%
+% NOTE: comment the +LP line and uncomment the -LP line to have page
+%       numbers without the ``of ##'' last page reference)
+%
+% NOTE: uncomment the \pagestyle{empty} line to get rid of all page
+%       numbers (make sure includefoot is commented out above)
+%
+\usepackage{fancyhdr,lastpage}
+\pagestyle{fancy}
+%\pagestyle{empty}      % Uncomment this to get rid of page numbers
+\fancyhf{}\renewcommand{\headrulewidth}{0pt}
+\fancyfootoffset{\marginparsep+\marginparwidth}
+\newlength{\footpageshift}
+\setlength{\footpageshift}
+          {0.5\textwidth+0.5\marginparsep+0.5\marginparwidth-2in}
+\lfoot{\hspace{\footpageshift}%
+       \parbox{4in}{\, \hfill %
+                    \arabic{page} of \protect\pageref*{LastPage} % +LP
+%                    \arabic{page}                               % -LP
+                    \hfill \,}}
+
+% Finally, give us PDF bookmarks
+\usepackage{color,hyperref}
+\definecolor{darkblue}{rgb}{0.0,0.0,0.5}
+\hypersetup{colorlinks,breaklinks,
+            linkcolor=darkblue,urlcolor=darkblue,
+            anchorcolor=darkblue,citecolor=darkblue}
+
+%%%%%%%%%%%%%%%%%%%%%%%% End Document Setup %%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%% Helper Commands %%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% The title (name) with a horizontal rule under it
+% (optional argument typesets an object right-justified across from name
+%  as well)
+%
+% Usage: \makeheading{name}
+%        OR
+%        \makeheading[right_object]{name}
+%
+% Place at top of document. It should be the first thing.
+% If ``right_object'' is provided in the square-braced optional
+% argument, it will be right justified on the same line as ``name'' at
+% the top of the CV. For example:
+%
+%       \makeheading[\emph{Curriculum vitae}]{Your Name}
+%
+% will put an emphasized ``Curriculum vitae'' at the top of the document
+% as a title. Likewise, a picture could be included:
+%
+%   \makeheading[\includegraphics[height=1.5in]{my_picutre}]{Your Name}
+%
+% the picture will be flush right across from the name.
+\newcommand{\makeheading}[2][]%
+        {\hspace*{-\marginparsep minus \marginparwidth}%
+         \begin{minipage}[t]{\textwidth+\marginparwidth+\marginparsep}%
+             {\large \bfseries #2 \hfill #1}\\[-0.15\baselineskip]%
+                 \rule{\columnwidth}{1pt}%
+         \end{minipage}}
+
+% The section headings
+%
+% Usage: \section{section name}
+\renewcommand{\section}[1]{\pagebreak[3]%
+    \hyphenpenalty=10000%
+    \vspace{1.3\baselineskip}%
+    \phantomsection\addcontentsline{toc}{section}{#1}%
+    \noindent\llap{\scshape\smash{\parbox[t]{\marginparwidth}{\raggedright #1}}}%
+    \vspace{-\baselineskip}\par}
+
+% An itemize-style list with lots of space between items
+\newenvironment{outerlist}[1][\enskip\textbullet]%
+        {\begin{itemize}[#1,leftmargin=*]}{\end{itemize}%
+         \vspace{-.6\baselineskip}}
+
+% An environment IDENTICAL to outerlist that has better pre-list spacing
+% when used as the first thing in a \section
+\newenvironment{lonelist}[1][\enskip\textbullet]%
+        {\begin{list}{#1}{%
+        \setlength{\partopsep}{0pt}%
+        \setlength{\topsep}{0pt}}}
+        {\end{list}\vspace{-.6\baselineskip}}
+
+% An itemize-style list with little space between items
+\newenvironment{innerlist}[1][\enskip\textbullet]%
+        {\begin{itemize}[#1,leftmargin=*,parsep=0pt,itemsep=0pt,topsep=0pt,partopsep=0pt]}
+        {\end{itemize}}
+
+% An environment IDENTICAL to innerlist that has better pre-list spacing
+% when used as the first thing in a \section
+\newenvironment{loneinnerlist}[1][\enskip\textbullet]%
+        {\begin{itemize}[#1,leftmargin=*,parsep=0pt,itemsep=0pt,topsep=0pt,partopsep=0pt]}
+        {\end{itemize}\vspace{-.6\baselineskip}}
+
+% To add some paragraph space between lines.
+% This also tells LaTeX to preferably break a page on one of these gaps
+% if there is a needed pagebreak nearby.
+\newcommand{\blankline}{\quad\pagebreak[3]}
+\newcommand{\halfblankline}{\quad\vspace{-0.5\baselineskip}\pagebreak[3]}
+
+% Uses hyperref to link DOI
+\newcommand\doilink[1]{\href{http://dx.doi.org/#1}{#1}}
+\newcommand\doi[1]{doi:\doilink{#1}}
+
+% For \url{SOME_URL}, links SOME_URL to the url SOME_URL
+\providecommand*\url[1]{\href{#1}{#1}}
+% Same as above, but pretty-prints SOME_URL in teletype fixed-width font
+\renewcommand*\url[1]{\href{#1}{\texttt{#1}}}
+
+% For \email{ADDRESS}, links ADDRESS to the url mailto:ADDRESS
+\providecommand*\email[1]{\href{mailto:#1}{#1}}
+% Same as above, but pretty-prints ADDRESS in teletype fixed-width 
+
+%\renewcommand*\email[1]{\href{mailto:#1}{\texttt{#1}}}
+
+%\providecommand\BibTeX{{\rm B\kern-.05em{\sc i\kern-.025em b}\kern-.08em
+%    T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
+%\providecommand\BibTeX{{\rm B\kern-.05em{\sc i\kern-.025em b}\kern-.08em
+%    \TeX}}
+\providecommand\BibTeX{{B\kern-.05em{\sc i\kern-.025em b}\kern-.08em
+    \TeX}}
+\providecommand\Matlab{\textsc{Matlab}}
+
+%%%%%%%%%%%%%%%%%%%%%%%% End Helper Commands %%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%% Begin CV Document %%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{document}
+\makeheading{Francisco J. Luongo}
+
+\section{Contact Information}
+
+% NOTE: Mind where the & separators and \\ breaks are in the following
+%       table.
+%
+% ALSO: \rcollength is the width of the right column of the table
+%       (adjust it to your liking; default is 1.85in).
+%
+\newlength{\rcollength}\setlength{\rcollength}{1.4in}%
+%
+\begin{tabular}[t]{@{}p{\textwidth-\rcollength}p{\rcollength}}
+796 Hayes st.   & 415-707-9095 \\
+San Francisco, CA 94102     & \email{francisco.luongo@ucsf.edu}\\
+\end{tabular}
+
+%\section{Objective}
+
+%Insert text here if you want to
+%\begin{innerlist}
+%\item More information and auxiliary documents can be found at\\\url{http://www.tedpavlic.com/facjobsearch/}
+%\end{innerlist}
+
+\section{Education}
+
+{\textbf{University of California, San Francisco}},
+San Francisco, CA
+\begin{outerlist}
+
+\item[] Ph.D.,
+             Neuroscience,
+             \emph{Expected:} Fall 2015
+        \begin{innerlist}
+        \item Thesis Topic: \emph{Information processing and computation in prefrontal microcircuits}
+        \item Thesis Advisor:
+\href{http://keck.ucsf.edu/~vsohal/}{{VIkaas S. Sohal, M.D., Ph.D}}
+        \end{innerlist}
+\end{outerlist}
+
+\vspace{.1in}
+{\textbf{Stanford University}},
+Palo Alto, CA
+\begin{outerlist}
+\item[] B.S.,
+             Biology, May 2008
+
+\end{outerlist}
+
+\section{Research Interests}
+
+Prefrontal microcircuits, neural computation, network analysis, calcium imaging, ECoG time-series analysis, scientific computing
+
+\section{Research Experience}
+
+\textbf{Doctoral Student} \hfill {June 2011 to present}
+\begin{innerlist}
+
+\item[] 
+        University of California San Francisco\\
+        Supervisor: \href{http://keck.ucsf.edu/~vsohal/}{{VIkaas S. Sohal, M.D., Ph.D}}
+\end{innerlist}
+\textbf{Research Assistant} \hfill {July 2008 to Aug 2010}
+\begin{innerlist}
+
+\item[] 
+        Stanford University\\
+        Supervisor: \href{http://web.stanford.edu/group/clandininlab/index.html}{Thomas Clandinin, Ph.D}
+\end{innerlist}
+\textbf{Undergraduate Researcher} \hfill {Dec 2006 to June 2008}
+\begin{innerlist}
+
+\item[] 
+        Stanford University\\
+        Supervisor: \href{http://web.stanford.edu/group/luolab/}{Liqun Luo, Ph.D}
+\end{innerlist}
+
+\section{Publications and Abstracts}
+\vspace{-.1275in}
+\begin{bibsection}
+
+	\item {\bf Luongo, F.}, Horn, M., and Sohal, V.S. "Putative microcircuit-level substrates for attention are disrupted in mouse models of autism." \emph{Biological Psychiatry}, In Press, 2015. \href{http://www.sciencedirect.com/science/article/pii/S0006322315003522}{\em link}
+
+    \item {\bf Luongo, F.}, Horn, M., and Sohal, V.S.  ``Changes in prefrontal microcircuit organization increase repetitive network activity in two mouse models of autism"  
+    \emph{AREADNE: Research in encoding and decoding of neural ensembles}, [Santorini, Greece], 2014. \href{http://areadne.org/2014/hatsopoulos-pezaris-2014-areadne.pdf}{\em link}
+
+    \item Gee, S., Ellwood, I., Patel, T., {\bf Luongo, F.}, Deisseroth, K., and Sohal, V.S.  ``Synaptic activity unmasks dopamine D2 receptor modulation of a specific class of layer V pyramidal neurons in prefrontal cortex." 
+    \emph{Journal of Neuroscience}, 4;32(14):4959--4971, 2012. \href{http://www.ncbi.nlm.nih.gov/pubmed/22492051}{\em link}
+
+    \item Gohl D.M., Silies M.A., Gao X.J., Bhalerao S., {\bf Luongo F.J.}, Potter C.J., and Clandinin T.R. ``A versatile in-­‐vivo system for directed genetic dissection of gene expression patterns." 
+    \emph{Nature Methods}, 8(3):231--237, 2011. \href{http://www.ncbi.nlm.nih.gov/pubmed/21473015}{\em link}
+
+	\item Otero L., {\bf Luongo F.}, Gonzalez E., Ganoza C,, Hinostroza G., Seas C., and Gotuzzo E. "High rate of TB among household contacts of multidrug-­‐resistant tuberculosis (MDR-­‐TB) index cases in a high incidence district of Lima, Peru." 
+	\emph{Centenary Meeting of the Royal Society of Tropical Medicine and Hygiene}  [London, UK], 2007
+
+	\item {\bf Luongo F.}, Cui B., and Han  K. "High Strength/ High Conductivty copper by pulsed electrodeposition." 
+	\emph{International Symposium of Crystalline Organic Materials.} [Key West, FL], 2005 
+	
+\end{bibsection}
+	
+	
+\section{Papers in Preparation}
+\vspace{-.1in}
+\begin{bibsection}
+    \item {\bf Luongo, F.}, Zimmerman, C., and Sohal, V.S. ``Prefrontal microcircuits have a small world organization which optimizes their production of a diverse repertoire of repetitive patterns of activity''
+
+	\item {\bf Luongo, F.}, Kirkby L. and Sohal, V.S. ``Analytical tools for identifying spatiotemporal structure in chronic ECoG recordings."
+
+    \item Ellwood, I., {\bf Luongo, F.}, and Sohal, V.S. ``Changes in criticality associated with the modulation of prefrontal microcircuits by dopamine."
+    
+\end{bibsection}
+
+\section{Awards}
+National Institute of General Medicine IMSD predoctoral fellow \hfill 2010\\
+National Hispanic Scholar \hfill 2004\\
+National Merit Scholar \hfill 2004
+
+
+
+\section{References}
+
+Vikaas S. Sohal
+\begin{innerlist}
+
+\item[] Assistant Professor \hfill {Phone: (415) 502-7377}
+\\ Department of Psychiatry \hfill{E-mail: \email{ vikaas.sohal@ucsf.edu}}\\
+University of California, San Francisco 
+\end{innerlist}
+
+\halfblankline
+
+Michael P. Stryker
+\begin{innerlist}
+\item[] W.F. Ganong Professor of Physiology \hfill {Phone: (415) 502-7380}\\
+Department of Physiology \hfill{E-mail: \email{stryker@ucsf.edu}}
+\\University of California, San Francisco 
+\end{innerlist}
+ 
+\halfblankline
+
+
+\section{Techniques and Software Skills}
+Techniques:
+\begin{innerlist}
+\item[] Optogenetics, calcium imaging, single-cell electrophysiology, micro-endoscope imaging, histology, cloning, drosophila genetics
+\end{innerlist}
+
+\halfblankline
+
+Computer Programming:
+\begin{innerlist}
+    \item[] python, \Matlab, bash, unix, Git 
+\end{innerlist}
+
+
+\end{document}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%% End CV Document %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%----------------------------------------------------------------------%
+% The following is copyright and licensing information for
+% redistribution of this LaTeX source code; it also includes a liability
+% statement. If this source code is not being redistributed to others,
+% it may be omitted. It has no effect on the function of the above code.
+%----------------------------------------------------------------------%
+% Copyright (c) 2007, 2008, 2009, 2010, 2011 by Theodore P. Pavlic
+%
+% Unless otherwise expressly stated, this work is licensed under the
+% Creative Commons Attribution-Noncommercial 3.0 United States License. To
+% view a copy of this license, visit
+% http://creativecommons.org/licenses/by-nc/3.0/us/ or send a letter to
+% Creative Commons, 171 Second Street, Suite 300, San Francisco,
+% California, 94105, USA.
+%
+% THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+% OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+% MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+% IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
+% CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
+% TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+% SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+%----------------------------------------------------------------------%
